@@ -216,7 +216,7 @@ void receiveMessage(int client_socket) {
 void addPollCount(std::string incoming_message) {
 
     int index = std::stoi(incoming_message);
-     //if the list has value, else add new value to the index;
+     //if the list has value, else add new value to the index
     if(poll_results.size() >= index) {
         index--;
         poll_results[index]++;
