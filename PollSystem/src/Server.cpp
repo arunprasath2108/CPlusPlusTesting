@@ -215,21 +215,17 @@ void receiveMessage(int client_socket) {
 
 void addPollCount(std::string incoming_message) {
 
-    poll_mutex.lock();
     int index = std::stoi(incoming_message);
-    index--;
-    
-    //if the list has value, else add new value to the index;
-    if(poll_results.size() > index) {
-        poll_results[index]++; 
+     //if the list has value, else add new value to the index;
+    if(poll_results.size() >= index) {
+        index--;
+        poll_results[index]++;
     }
     else {
-        //if index is zero, set the list size as 1;
-        int list_size = (index == 0)? 1 : index;
-        poll_results.resize(list_size);
+        poll_results.resize(index);
+        index--;
         poll_results[index] = 1;
     }
-    poll_mutex.unlock();
 }
 
 void printResult(int clients, int participants) {
@@ -251,11 +247,4 @@ void printPollChoice() {
         std::cout << ++i << " " << poll_options[--i] << std::endl;
     }
 }
-
-
-
-    
-
-
-
     
