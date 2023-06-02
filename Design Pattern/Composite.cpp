@@ -11,7 +11,7 @@ class Triangle: public Shape {
 
     public :
 	void draw(std::string fillColor) {
-		std::cout << "Drawing Triangle with color " << fillColor << std::endl;
+		std::cout << "Drawing Triangle with the color " << fillColor << std::endl;
 	}
 };
 
@@ -19,7 +19,7 @@ class Circle: public Shape {
 
     public :
 	void draw(std::string fillColor) {
-		std::cout << "Drawing Circle with color " << fillColor << std::endl;
+		std::cout << "Drawing Circle with the color " << fillColor << std::endl;
 	}
 };
 
