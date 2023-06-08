@@ -7,6 +7,7 @@ class Shape {
 	virtual void draw(std::string) = 0;
 };
 
+//part object
 class Triangle: public Shape {
 
     public :
@@ -23,7 +24,7 @@ class Circle: public Shape {
 	}
 };
 
-
+//whole object
 class Draw: public Shape {
 
 	std::vector<Shape*> shapes;
@@ -48,7 +49,7 @@ class Draw: public Shape {
         }
 	}
 	
-	void clear(){
+	void clear() {
 		std::cout << "delete all shapes from draw" << std::endl;
 		shapes.clear();
 	}
