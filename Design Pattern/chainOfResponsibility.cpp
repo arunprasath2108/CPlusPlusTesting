@@ -112,8 +112,8 @@ class PlaceOrderHandler : public Handler {
 };
 
 int main() {
-
-    Order order("a", "mobile", 123, 1);
+                //name, product, pincode, payment
+    Order order("arun", "mobile", 633123, 10000);
 
     Handler* availabilityHandler = new AvailabilityHandler();
     Handler* addressHandler = new AddressHandler();
