@@ -2,9 +2,11 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <vector>
 
 void printServerMessage(char[], int&);
-int getClientInput(int);
+std::string getClientInput(int);
+std::vector<std::string> poll;
 
 int main() {
 
@@ -28,29 +30,32 @@ int main() {
     
     bytes_read = recv(client_socket, poll_message, size-1, 0);
     printServerMessage(poll_message, choice_count);
-    int client_input = getClientInput(choice_count);
-
-    outgoing_message = std::to_string(client_input);
-    send(client_socket, &outgoing_message, sizeof(outgoing_message), 0);
-
+    std::string client_choice = getClientInput(choice_count);
+    send(client_socket, &client_choice, sizeof(client_choice), 0);
     std::cout << "Choice sent success" << std::endl;
     close(client_socket);
 }
 
 void printServerMessage(char receivedMessage[], int &choice_count) {
-
+    std::string poll_choice = "";
     if(strlen(receivedMessage) == 0) {
       std::cout << "No message received from server\n" << std::endl;
       exit(1);
     }
 
-    for(int i=0; i<strlen(receivedMessage); i++) {
+    for(int i=0;i<=strlen(receivedMessage);i++) {
+      if(i == strlen(receivedMessage)) {
+        poll.push_back(poll_choice);
+        break;
+      }
       if(receivedMessage[i] == '\n') {
-        //count the choices
         choice_count++;
-        std::cout << "\n" << choice_count << " ";
+        poll.push_back(poll_choice);
+        poll_choice = "";
+        std::cout << "\n" << choice_count << " - ";
       } else {
           std::cout << receivedMessage[i];
+          poll_choice+=receivedMessage[i];
       }
     }
 
@@ -62,18 +67,19 @@ void printServerMessage(char receivedMessage[], int &choice_count) {
     std::cout << std::endl;
 }
 
-int getClientInput(int choice_count) {
-  
+std::string getClientInput(int choice_count) {
+
     int input;
     while(true) {
-      std::cout << "Choose an option: " << std::endl;
-      std::cin >> input;
-      if(input <= choice_count && input > 0) {
-          return input;
-      }
-      else {
-          std::cout << "Wrong input" << std::endl;
-          return getClientInput(choice_count);
-      }      
+        std::cout << "Choose an option: " << std::endl;
+        std::cin >> input;
+        if(input <= choice_count && input > 0) {
+            return poll[input];
+        }
+        else {
+            std::cout << "Wrong input" << std::endl;
+            std::cin.clear();
+            std::cin.ignore(1000, '\n');
+        }      
     }
 }
